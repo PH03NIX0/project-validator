@@ -9,7 +9,7 @@ const Navbar = () => {
       <header className="header flex justify-between align-middle px-10 py-3 border-b-[1px] border-gray-200">
         <a
           href="#"
-          className="font-bold text-lg sm:text-xl lg:text-2xl" // Adjust font size for mobile
+          className="font-bold text-lg text-gray-700 sm:text-xl lg:text-2xl" // Adjust font size for mobile
         >
           Project-Validator
         </a>
