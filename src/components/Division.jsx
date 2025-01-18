@@ -1,7 +1,7 @@
 import React from 'react';
 import Searchbar from './Searchbar';
 import Recents from './Recents';
-import Stats from './Stats';
+import Details from './Details';
 
 const Division = () => {
     return (
@@ -12,9 +12,9 @@ const Division = () => {
                 <Recents />
             </div>
 
-            {/* Stats Section */}
+            {/* Details Section */}
             <div className="flex-grow sm:w-[30%] border-l border-gray-200">
-                <Stats />
+                <Details />
             </div>
         </div>
     );

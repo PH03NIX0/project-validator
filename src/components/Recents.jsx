@@ -8,7 +8,7 @@ const Recents = () => {
                 <h3 className='text-3xl font-semibold text-gray-700'>Recents</h3>
             </div>
             {/* Header Section */}
-            <div className="bg-[#edf2fa] mx-4 border-2 rounded-md overflow-y-auto border-[#d6e0f1]">
+            <div className="bg-[#edf2fa] mx-4 border-2 rounded-md border-[#d6e0f1]">
                 <div className="py-2 grid grid-cols-4 text-sm sm:text-base">
                     <div className="px-4 flex items-center text-[#8f959c]">Name</div>
                     <div className="px-4 flex items-center border-l-2 border-[#d6e0f1] text-[#8f959c]">Topic</div>

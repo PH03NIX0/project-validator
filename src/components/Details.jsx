@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Stats = () => {
+const Details = () => {
   return (
     <div className="my-5">
       <div className="bg-gray-100 p-6 m-4 rounded-md shadow-md h-screen overflow-y-auto">
@@ -34,4 +34,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default Details;
