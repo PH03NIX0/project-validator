@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Modal from './Modal.jsx';
+import React, { useState } from "react";
+import Modal from "./Modal.jsx";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false); // Add state for modal visibility
@@ -33,9 +33,10 @@ const Navbar = () => {
             Modal Title
           </h3>
           <p className="sm:text-sm xs:text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ipsum corrupti ad
-            perspiciatis officiis aliquid fugit veniam facere eaque voluptate, natus voluptatum,
-            consequuntur eius. Eligendi consectetur ab dolorum cum architecto.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
+            ipsum corrupti ad perspiciatis officiis aliquid fugit veniam facere
+            eaque voluptate, natus voluptatum, consequuntur eius. Eligendi
+            consectetur ab dolorum cum architecto.
           </p>
         </div>
       </Modal>
