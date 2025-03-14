@@ -77,14 +77,16 @@ const Searchbar = ({ onSelect }) => {
             results.map((item, index) => (
               <div
                 key={index}
-                className="p-2 cursor-pointer hover:bg-gray-100"
+                className="p-2 cursor-pointer hover:bg-gray-100 flex justify-around"
                 onClick={() => {
-                  onSelect(item); // Pass selected project to parent
+                  setQuery(item.name);
                   setIsOpen(false);
                 }}
               >
                 <span>{item.author_name}</span> |{" "}
-                <span>{item.project_title}</span>
+                <span>{item.project_title}</span> |{" "}
+                <span>{item.date_of_submission}</span> |{" "}
+                <span>{item.supervisor}</span>
               </div>
             ))
           ) : (

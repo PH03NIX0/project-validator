@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Details = ({ selectedProject, onUpdate }) => {
   const [editMode, setEditMode] = useState(false);
@@ -10,15 +11,26 @@ const Details = ({ selectedProject, onUpdate }) => {
   }, [selectedProject]);
 
   const handleUpdate = async () => {
+    const { id, payload } = updatedProject;
+
     try {
-      await axios.put(
-        `https://project-validator.onrender.com/api/v1/update/${updatedProject.id}`,
-        updatedProject
+      const { data } = await axios.patch(
+        `https://project-validator.onrender.com/api/v1/update/${id}`,
+        payload
       );
-      alert("Project updated successfully!");
+      toast.success(`${data.message || "Success"}`, {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
       setEditMode(false);
       onUpdate(updatedProject);
     } catch (error) {
+      toast.error(`${error.message || "An error occured"}`, {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
       console.error("Error updating project:", error);
     }
   };
@@ -47,11 +59,12 @@ const Details = ({ selectedProject, onUpdate }) => {
             "author_name",
             "project_title",
             "date_of_submission",
-            "description",
+            "abstract",
           ].map((field) => (
             <div key={field}>
               <p className="text-sm font-medium text-gray-500">
-                {field.replace("_", " ")}
+                {field.charAt(0).toUpperCase() +
+                  field.replace("_", " ").slice(1)}
               </p>
               {editMode ? (
                 <input

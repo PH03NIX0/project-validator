@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Recents = ({ onSelect }) => {
   const [submissions, setSubmissions] = useState([]);
@@ -29,14 +30,27 @@ const Recents = ({ onSelect }) => {
       return;
 
     try {
-      await axios.delete(
+      const { data } = await axios.delete(
         `https://project-validator.onrender.com/api/v1/delete/${id}`
       );
+
+      toast.success(`${data.message || "Success"}`, {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+
       setSubmissions((prev) =>
         prev.filter((submission) => submission.id !== id)
       );
     } catch (error) {
       console.error("Error deleting project:", error);
+
+      toast.error(`${error.message || "An error occured"}`, {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
     }
   };
 
@@ -106,7 +120,7 @@ const Recents = ({ onSelect }) => {
                     className="text-blue-500 hover:underline"
                     onClick={() => onSelect(submission)}
                   >
-                    Edit
+                    View
                   </button>
                   <button
                     className="text-red-500 hover:underline"
