@@ -87,8 +87,9 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
         className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50"
         id="wrapper"
         onClick={handleClose}
-      >
-        <div className="w-[90%] sm:w-[600px] flex flex-col z-50">
+      ></div>
+      <div className="absolute flex justify-center items-center w-full">
+        <div className="w-[90%] sm:w-[600px] flex-col z-50">
           {!loading ? (
             <>
               <button
@@ -99,7 +100,7 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
               </button>
 
               <form
-                className="bg-white p-4 sm:p-6 rounded space-y-4"
+                className="bg-white p-4 sm:p-6 rounded space-y-4 overflow-y-auto"
                 action=""
                 onSubmit={handleSubmit}
               >
