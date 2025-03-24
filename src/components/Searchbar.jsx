@@ -36,7 +36,7 @@ const Searchbar = ({ onSelect }) => {
     clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
       fetchResults(e.target.value);
-    }, 500);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -79,8 +79,8 @@ const Searchbar = ({ onSelect }) => {
                 key={index}
                 className="p-2 cursor-pointer hover:bg-gray-100 flex justify-around"
                 onClick={() => {
+                  onSelect(item);
                   setQuery(item.name);
-                  setIsOpen(false);
                 }}
               >
                 <span>{item.author_name}</span> |{" "}
