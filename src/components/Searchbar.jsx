@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
 const Searchbar = ({ onSelect }) => {
@@ -7,10 +7,11 @@ const Searchbar = ({ onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
-  let debounceTimer = useRef(null);
+  const debounceTimer = useRef(null);
 
-  const fetchResults = async (searchTerm) => {
-    if (!searchTerm) {
+  // Function to fetch search results
+  const fetchResults = useCallback(async (searchTerm) => {
+    if (!searchTerm.trim()) {
       setResults([]);
       setIsOpen(false);
       return;
@@ -18,27 +19,51 @@ const Searchbar = ({ onSelect }) => {
 
     try {
       setLoading(true);
+      setIsOpen(true);
+
       const { data } = await axios.get(
         `https://project-validator.onrender.com/api/v1/q/?search=${searchTerm}`
       );
-      setResults(data.projects || []);
-      setIsOpen(true);
+
+      console.log("API Response:", data); // Debugging: Check what the API returns
+
+      const projects = Array.isArray(data.projects) ? data.projects : [];
+
+      setResults(projects);
+
+      if (!projects.length > 0) {
+        setIsOpen(false);
+        setResults([]);
+      }
     } catch (error) {
       console.error("Error fetching search results:", error);
       setResults([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
+  // Debounced search effect
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      setIsOpen(false);
+      return;
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      fetchResults(query);
+    }, 500); // 500ms delay before API request
+
+    return () => clearTimeout(debounceTimer.current);
+  }, [query, fetchResults]);
+
+  // Handle input change
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
-    clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      fetchResults(e.target.value);
-    }, 1000);
   };
 
+  // Close search results when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -73,7 +98,9 @@ const Searchbar = ({ onSelect }) => {
         <div className="absolute w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-10">
           {loading ? (
             <p className="p-2 text-gray-500 text-sm">Loading...</p>
-          ) : results.length > 0 ? (
+          ) : null}
+
+          {results.length !== 0 ? (
             results.map((item, index) => (
               <div
                 key={index}
@@ -81,6 +108,7 @@ const Searchbar = ({ onSelect }) => {
                 onClick={() => {
                   onSelect(item);
                   setQuery(item.name);
+                  setIsOpen(false);
                 }}
               >
                 <span>{item.author_name}</span> |{" "}
