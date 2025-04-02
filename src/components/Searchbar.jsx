@@ -27,7 +27,11 @@ const Searchbar = ({ onSelect }) => {
 
       console.log("API Response:", data); // Debugging: Check what the API returns
 
-      const projects = Array.isArray(data.projects) ? data.projects : [];
+      const projects = Array.isArray(data)
+        ? data
+        : Array.isArray(data.projects)
+        ? data.projects
+        : [];
 
       setResults(projects);
 
@@ -45,7 +49,8 @@ const Searchbar = ({ onSelect }) => {
 
   // Debounced search effect
   useEffect(() => {
-    if (!query.trim()) {
+    const sanitizedQuery = query ? query.trim() : "";
+    if (!sanitizedQuery) {
       setResults([]);
       setIsOpen(false);
       return;
@@ -98,9 +103,7 @@ const Searchbar = ({ onSelect }) => {
         <div className="absolute w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-2 z-10">
           {loading ? (
             <p className="p-2 text-gray-500 text-sm">Loading...</p>
-          ) : null}
-
-          {results.length !== 0 ? (
+          ) : results.length !== 0 ? (
             results.map((item, index) => (
               <div
                 key={index}
