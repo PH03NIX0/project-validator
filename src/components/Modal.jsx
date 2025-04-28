@@ -82,139 +82,60 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
   };
 
   return (
-    <>
-      <div
-        className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50"
-        id="wrapper"
-        onClick={handleClose}
-      ></div>
-      <div className="absolute flex justify-center items-center w-full">
-        <div className="w-[90%] sm:w-[600px] flex-col z-50">
-          {!loading ? (
-            <>
-              <button
-                className="text-white text-xl place-self-end"
-                onClick={() => onClose()}
-              >
-                X
-              </button>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50"
+      id="wrapper"
+      onClick={handleClose}
+    >
+      <div className="w-[90%] sm:w-[700px] bg-white p-6 rounded-md shadow-md max-h-[90vh] overflow-y-auto">
+        {!loading ? (
+          <>
+            <button
+              className="text-gray-600 text-xl place-self-end mb-4"
+              onClick={() => onClose()}
+            >
+              X
+            </button>
 
-              <form
-                className="bg-white p-4 sm:p-6 rounded space-y-4 overflow-y-auto"
-                action=""
-                onSubmit={handleSubmit}
-              >
+            <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSubmit}>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Name of Authors
-                  </label>
-                  <input
-                    type="text"
-                    name="author_name"
-                    value={formData.author_name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Enter author names"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Name of Authors</label>
+                  <input type="text" name="author_name" value={formData.author_name} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Enter author names" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Title of Project
-                  </label>
-                  <input
-                    type="text"
-                    name="project_title"
-                    value={formData.project_title}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Enter project title"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Title of Project</label>
+                  <input type="text" name="project_title" value={formData.project_title} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Enter project title" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Date of Submission
-                  </label>
-                  <input
-                    type="date"
-                    name="date_of_submission"
-                    value={formData.date_of_submission}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Date of Submission</label>
+                  <input type="date" name="date_of_submission" value={formData.date_of_submission} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Abstract
-                  </label>
-                  <textarea
-                    name="abstract"
-                    value={formData.abstract}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Enter abstract"
-                    rows="4"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Supervisor</label>
+                  <input type="text" name="supervisor" value={formData.supervisor} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Supervisor Name" />
+                </div>
+
+                <div className="col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700">Abstract</label>
+                  <textarea name="abstract" value={formData.abstract} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Enter abstract" rows="3" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Aims
-                  </label>
-                  <input
-                    type="text"
-                    name="aims"
-                    value={formData.aims}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Enter Project Aim"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Aims</label>
+                  <input type="text" name="aims" value={formData.aims} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Enter Project Aim" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Objectives
-                  </label>
-                  <input
-                    type="text"
-                    name="objectives"
-                    value={formData.objectives}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Enter Project Objectives. Comma separated"
-                  />
+                  <label className="block text-sm font-semibold text-gray-700">Objectives</label>
+                  <input type="text" name="objectives" value={formData.objectives} onChange={handleChange} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md" placeholder="Enter Project Objectives, comma separated" />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Supervisor
-                  </label>
-                  <input
-                    type="text"
-                    name="supervisor"
-                    value={formData.supervisor}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                    placeholder="Supervisor Name"
-                  />
-                </div>
-
-                <div className="flex justify-end space-x-2">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-gray-300 text-black rounded-md"
-                    onClick={() => onClose()}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
-                  >
-                    Submit
-                  </button>
+                <div className="col-span-2 flex justify-end space-x-2 mt-4">
+                  <button type="button" className="px-4 py-2 bg-gray-300 text-black rounded-md" onClick={onClose}>Cancel</button>
+                  <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Submit</button>
                 </div>
               </form>
             </>
@@ -223,9 +144,8 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
               Please wait...
             </div>
           )}
-        </div>
       </div>
-    </>
+    </div>
   );
 };
 
