@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const Recents = ({ onSelect }) => {
   const [submissions, setSubmissions] = useState([]);
+  const [admin_id, setAdminID] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,7 +12,7 @@ const Recents = ({ onSelect }) => {
     const fetchSubmissions = async () => {
       try {
         const { data } = await axios.get(
-          "https://project-validator.onrender.com/api/v1/projects"
+          "http://localhost:8080/api/v1/projects"
         );
         setSubmissions(data || []);
       } catch (err) {
@@ -25,13 +26,21 @@ const Recents = ({ onSelect }) => {
     fetchSubmissions();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, adminID) => {
+    if (!adminID)
+      return toast.error(`Admin ID is required`, {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+
     if (!window.confirm("Are you sure you want to delete this project?"))
       return;
 
     try {
       const { data } = await axios.delete(
-        `https://project-validator.onrender.com/api/v1/delete/${id}`
+        `http://localhost:8080/api/v1/delete/${id}`,
+        { data: { admin_id: adminID } }
       );
 
       toast.success(`${data.message || "Success"}`, {
@@ -46,11 +55,14 @@ const Recents = ({ onSelect }) => {
     } catch (error) {
       console.error("Error deleting project:", error);
 
-      toast.error(`${error.message || "An error occured"}`, {
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-      });
+      toast.error(
+        `${error.response.data.message || error.message || "An error occured"}`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+        }
+      );
     }
   };
 
@@ -124,7 +136,21 @@ const Recents = ({ onSelect }) => {
                   </button>
                   <button
                     className="text-red-500 hover:underline"
-                    onClick={() => handleDelete(submission.id)}
+                    onClick={() => {
+                      const enteredAdminID = window.prompt("Enter Admin ID:");
+                      if (!enteredAdminID) {
+                        toast.error(
+                          "Admin ID is required to delete a project",
+                          {
+                            position: "top-right",
+                            autoClose: 3000,
+                            closeOnClick: true,
+                          }
+                        );
+                        return;
+                      }
+                      handleDelete(submission.id, enteredAdminID);
+                    }}
                   >
                     Delete
                   </button>

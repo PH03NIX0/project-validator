@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 const Details = ({ selectedProject, onUpdate }) => {
   const [editMode, setEditMode] = useState(false);
+  const [adminID, setAdminID] = useState("");
   const [updatedProject, setUpdatedProject] = useState(selectedProject);
 
   useEffect(() => {
@@ -13,10 +14,18 @@ const Details = ({ selectedProject, onUpdate }) => {
   const handleUpdate = async () => {
     const { id, payload } = updatedProject;
 
+    if (!adminID) {
+      return toast.error("Provide an admin ID", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+    }
+
     try {
       const { data } = await axios.patch(
-        `https://project-validator.onrender.com/api/v1/update/${id}`,
-        payload
+        `http://localhost:8080/api/v1/update/${id}`,
+        { admin_id: adminID, ...payload }
       );
       toast.success(`${data.message || "Success"}`, {
         position: "top-right",
@@ -26,12 +35,19 @@ const Details = ({ selectedProject, onUpdate }) => {
       setEditMode(false);
       onUpdate(updatedProject);
     } catch (error) {
-      toast.error(`${error.message || "An error occured"}`, {
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-      });
+      console.log({ error });
+
+      toast.error(
+        `${error.response.data.message || error.message || "An error occured"}`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+        }
+      );
       console.error("Error updating project:", error);
+    } finally {
+      setAdminID("");
     }
   };
 
@@ -54,6 +70,20 @@ const Details = ({ selectedProject, onUpdate }) => {
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Project Details
         </h2>
+        {editMode && (
+          <div className="mb-3">
+            <p className="text-sm font-medium text-gray-500">
+              Project Admin ID
+            </p>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded"
+              value={adminID}
+              onChange={(e) => setAdminID(e.target.value)}
+              placeholder="Enter admin ID to edit project"
+            />
+          </div>
+        )}
         <div className="space-y-4">
           {[
             "author_name",
@@ -127,7 +157,6 @@ const Details = ({ selectedProject, onUpdate }) => {
             )}
           </div>
         </div>
-
         <div className="mt-4 flex space-x-2">
           {editMode ? (
             <>
