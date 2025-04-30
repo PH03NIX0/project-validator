@@ -24,7 +24,7 @@ const Details = ({ selectedProject, onUpdate }) => {
 
     try {
       const { data } = await axios.patch(
-        `http://localhost:8080/api/v1/update/${id}`,
+        `https://project-validator.onrender.com/api/v1/update/${id}`,
         { admin_id: adminID, ...payload }
       );
       toast.success(`${data.message || "Success"}`, {
