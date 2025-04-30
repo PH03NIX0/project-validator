@@ -7,7 +7,7 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    admin_id: "",
+    admin_id: "PJVLD001",
     author_name: "",
     project_title: "",
     date_of_submission: "",
@@ -43,13 +43,13 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
         closeOnClick: true,
       });
 
-    if (formData.admin_id.length < 4) {
-      return toast.error("Admin ID is too short", {
-        position: "top-right",
-        autoClose: 3000,
-        closeOnClick: true,
-      });
-    }
+    // if (formData.admin_id.length < 4) {
+    //   return toast.error("Admin ID is too short", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     closeOnClick: true,
+    //   });
+    // }
 
     const { date_of_submission } = formData;
     const formattedDate = new Date(date_of_submission).toISOString();
@@ -74,6 +74,17 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
         autoClose: 3000,
         closeOnClick: true,
       });
+
+      toast.info(
+        `Your adminID is ${data.admin_id} Keep this ID safe. You'll need it to update or delete your project`,
+        {
+          position: "top-right",
+          autoClose: false,
+          hideProgressBar: true,
+          draggable: false,
+          closeOnClick: false,
+        }
+      );
 
       onClose(); // Close the modal after submission
     } catch (error) {
@@ -110,7 +121,7 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
     if (e.target.id === "wrapper") {
       onClose();
       setFormData({
-        admin_id: "",
+        // admin_id: "",
         author_name: "",
         project_title: "",
         date_of_submission: "",
@@ -142,7 +153,7 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
               onSubmit={handleSubmit}
             >
-              <div className="col-span-2">
+              {/* <div className="col-span-2">
                 <label className="block text-sm font-semibold text-gray-700">
                   Admin ID
                 </label>
@@ -154,7 +165,7 @@ const Modal = ({ isVisible, onClose, onSubmit }) => {
                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
                   placeholder="Enter a valid admin ID or create new"
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700">

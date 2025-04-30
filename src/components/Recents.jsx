@@ -92,8 +92,8 @@ const Recents = ({ onSelect }) => {
 
       <div className="mx-4 pb-5">
         <div
-          className="space-y-2 sm:space-y-4 overflow-y-auto"
-          style={{ maxHeight: "20rem" }}
+          className="space-y-2 sm:space-y-4 overflow-y-auto max-h-[20rem] md:max-h-[35rem] "
+          // style={{ maxHeight: "20rem" }}
         >
           {loading ? (
             <p className="p-4 text-gray-500 text-sm">Loading...</p>
