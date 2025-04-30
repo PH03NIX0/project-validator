@@ -25,7 +25,7 @@ const Details = ({ selectedProject, onUpdate }) => {
 
     try {
       const { data } = await axios.patch(
-        `http://localhost:8080/api/v1/update/${id}`,
+        `https://project-validator.onrender.com/api/v1/update/${id}`,
         dataToUpdate
       );
       toast.success(`${data.message || "Success"}`, {
@@ -35,7 +35,7 @@ const Details = ({ selectedProject, onUpdate }) => {
       });
       setEditMode(false);
       onUpdate(updatedProject);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log({ error });
 

@@ -22,7 +22,7 @@ const Searchbar = ({ onSelect }) => {
       setIsOpen(true);
 
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/q/?search=${searchTerm}`
+        `https://project-validator.onrender.com/api/v1/q/?search=${searchTerm}`
       );
 
       console.log("API Response:", data); // Debugging: Check what the API returns

@@ -12,11 +12,11 @@ const Recents = ({ onSelect }) => {
     const fetchSubmissions = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:8080/api/v1/projects"
+          "https://project-validator.onrender.com/api/v1/projects"
         );
         setSubmissions(data || []);
       } catch (err) {
-        setError("Failed to load submissions.");
+        setError(err.response?.data?.message || "Failed to load submissions.");
         console.error("Error fetching submissions:", err);
       } finally {
         setLoading(false);
@@ -39,7 +39,7 @@ const Recents = ({ onSelect }) => {
 
     try {
       const { data } = await axios.delete(
-        `http://localhost:8080/api/v1/delete/${id}`,
+        `https://project-validator.onrender.com/api/v1/delete/${id}`,
         { data: { admin_id: adminID } }
       );
 
