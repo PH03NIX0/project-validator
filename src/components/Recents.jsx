@@ -12,7 +12,7 @@ const Recents = ({ onSelect }) => {
     const fetchSubmissions = async () => {
       try {
         const { data } = await axios.get(
-          "https://project-validator.onrender.com/api/v1/projects"
+          "http://localhost:8080/api/v1/projects"
         );
         setSubmissions(data || []);
       } catch (err) {
@@ -39,7 +39,7 @@ const Recents = ({ onSelect }) => {
 
     try {
       const { data } = await axios.delete(
-        `https://project-validator.onrender.com/api/v1/delete/${id}`,
+        `http://localhost:8080/api/v1/delete/${id}`,
         { data: { admin_id: adminID } }
       );
 

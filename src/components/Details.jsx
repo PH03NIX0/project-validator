@@ -12,7 +12,7 @@ const Details = ({ selectedProject, onUpdate }) => {
   }, [selectedProject]);
 
   const handleUpdate = async () => {
-    const { id, payload } = updatedProject;
+    const { id, createdAt, updatedAt, ...payload } = updatedProject;
 
     if (!adminID) {
       return toast.error("Provide an admin ID", {
@@ -21,11 +21,12 @@ const Details = ({ selectedProject, onUpdate }) => {
         closeOnClick: true,
       });
     }
+    const dataToUpdate = { ...payload, admin_id: adminID };
 
     try {
       const { data } = await axios.patch(
-        `https://project-validator.onrender.com/api/v1/update/${id}`,
-        { admin_id: adminID, ...payload }
+        `http://localhost:8080/api/v1/update/${id}`,
+        dataToUpdate
       );
       toast.success(`${data.message || "Success"}`, {
         position: "top-right",
@@ -34,6 +35,7 @@ const Details = ({ selectedProject, onUpdate }) => {
       });
       setEditMode(false);
       onUpdate(updatedProject);
+      window.location.reload();
     } catch (error) {
       console.log({ error });
 
@@ -70,20 +72,18 @@ const Details = ({ selectedProject, onUpdate }) => {
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Project Details
         </h2>
-        {editMode && (
-          <div className="mb-3">
-            <p className="text-sm font-medium text-gray-500">
-              Project Admin ID
-            </p>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded"
-              value={adminID}
-              onChange={(e) => setAdminID(e.target.value)}
-              placeholder="Enter admin ID to edit project"
-            />
-          </div>
-        )}
+
+        <div className={`mb-3 ${editMode ? "block" : "hidden"}`}>
+          <p className="text-sm font-medium text-gray-500">Project Admin ID</p>
+          <input
+            type="text"
+            className="w-full p-2 border border-gray-300 rounded"
+            value={adminID}
+            onChange={(e) => setAdminID(e.target.value)}
+            placeholder="Enter admin ID to edit project"
+          />
+        </div>
+
         <div className="space-y-4">
           {[
             "author_name",
