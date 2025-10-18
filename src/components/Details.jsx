@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { supabase } from "../supabaseClient"; // adjust path if needed
 
 const Details = ({ selectedProject, onUpdate }) => {
   const [editMode, setEditMode] = useState(false);
@@ -21,33 +21,36 @@ const Details = ({ selectedProject, onUpdate }) => {
         closeOnClick: true,
       });
     }
+
     const dataToUpdate = { ...payload, admin_id: adminID };
 
     try {
-      const { data } = await axios.patch(
-        `https://project-validator.onrender.com/api/v1/update/${id}`,
-        dataToUpdate
-      );
-      toast.success(`${data.message || "Success"}`, {
+      // ✅ Replace with your Supabase table name
+      const { data, error } = await supabase
+        .from("projects")
+        .update(dataToUpdate)
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast.success("Project updated successfully!", {
         position: "top-right",
         autoClose: 3000,
         closeOnClick: true,
       });
+
       setEditMode(false);
       onUpdate(updatedProject);
-      // window.location.reload();
     } catch (error) {
-      console.log({ error });
-
+      console.error("Error updating project:", error);
       toast.error(
-        `${error.response.data.message || error.message || "An error occured"}`,
+        error.message || "An error occurred while updating the project",
         {
           position: "top-right",
           autoClose: 3000,
           closeOnClick: true,
         }
       );
-      console.error("Error updating project:", error);
     } finally {
       setAdminID("");
     }
@@ -85,36 +88,33 @@ const Details = ({ selectedProject, onUpdate }) => {
         </div>
 
         <div className="space-y-4">
-          {[
-            "author_name",
-            "project_title",
-            "date_of_submission",
-            "abstract",
-          ].map((field) => (
-            <div key={field}>
-              <p className="text-sm font-medium text-gray-500">
-                {field.charAt(0).toUpperCase() +
-                  field.replace("_", " ").slice(1)}
-              </p>
-              {editMode ? (
-                <input
-                  type="text"
-                  className="w-full p-2 border border-gray-300 rounded"
-                  value={updatedProject[field] || ""}
-                  onChange={(e) =>
-                    setUpdatedProject({
-                      ...updatedProject,
-                      [field]: e.target.value,
-                    })
-                  }
-                />
-              ) : (
-                <p className="text-base text-gray-700">
-                  {selectedProject[field]}
+          {["author_name", "project_title", "date_of_submission", "abstract"].map(
+            (field) => (
+              <div key={field}>
+                <p className="text-sm font-medium text-gray-500">
+                  {field.charAt(0).toUpperCase() +
+                    field.replace("_", " ").slice(1)}
                 </p>
-              )}
-            </div>
-          ))}
+                {editMode ? (
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded"
+                    value={updatedProject[field] || ""}
+                    onChange={(e) =>
+                      setUpdatedProject({
+                        ...updatedProject,
+                        [field]: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  <p className="text-base text-gray-700">
+                    {selectedProject[field]}
+                  </p>
+                )}
+              </div>
+            )
+          )}
 
           {/* Aim */}
           <div>
@@ -138,7 +138,7 @@ const Details = ({ selectedProject, onUpdate }) => {
             {editMode ? (
               <textarea
                 className="w-full p-2 border border-gray-300 rounded"
-                value={updatedProject.objectives.join("\n") || ""}
+                value={updatedProject.objectives?.join("\n") || ""}
                 onChange={(e) =>
                   setUpdatedProject({
                     ...updatedProject,
@@ -157,6 +157,7 @@ const Details = ({ selectedProject, onUpdate }) => {
             )}
           </div>
         </div>
+
         <div className="mt-4 flex space-x-2">
           {editMode ? (
             <>
