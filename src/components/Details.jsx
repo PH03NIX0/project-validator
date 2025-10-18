@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { supabase } from "../supabaseClient"; // adjust path if needed
+import { supabase } from "../services/supabaseClient";
 
 const Details = ({ selectedProject, onUpdate }) => {
   const [editMode, setEditMode] = useState(false);
